@@ -1,0 +1,2 @@
+public class FlashCard {
+}
