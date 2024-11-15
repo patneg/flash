@@ -89,7 +89,7 @@ public class CardCreatorController {
     
     //Unit Tests
     public static void main(String[] args) {
-        //Testet, ob eine neue FlashCard zur Liste hinzugefügt wird wenn die Felder nicht leer sind.
+        //Testet, ob eine neue FlashCard zur Liste hinzugefügt wird, wenn die Felder nicht leer sind.
         // Arrange
         CardCreatorView view = new CardCreatorView();
         CardCreatorController controller = new CardCreatorController(view);
