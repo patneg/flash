@@ -37,7 +37,22 @@ public class CardPlayerEditorController {
         this.progressLabel = progressLabel;
         this.currentCardIndex = 0;
     }
-
+    public void importCardSet(JFrame frame) {
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(frame);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try {
+                cardManager.loadCardsFromFile(selectedFile);
+                currentFile = selectedFile;
+                updateCardList();
+                JOptionPane.showMessageDialog(frame, "Card set imported successfully!");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(frame, "Error importing card set.");
+                e.printStackTrace();
+            }
+        }
+    }
     public CardPlayerEditorController(CardManager cardManager) {
     }
 
@@ -79,22 +94,7 @@ public class CardPlayerEditorController {
         showAnswerButton.setEnabled(false);
     }
     // Methode für den Import eines Kartensets
-    public void importCardSet(JFrame frame) {
-        JFileChooser fileChooser = new JFileChooser();
-        int returnValue = fileChooser.showOpenDialog(frame);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            try {
-                cardManager.loadCardsFromFile(selectedFile);
-                currentFile = selectedFile;
-                updateCardList();
-                JOptionPane.showMessageDialog(frame, "Card set imported successfully!");
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(frame, "Error importing card set.");
-                e.printStackTrace();
-            }
-        }
-    }
+
 
     // Methode zur Speicherung von Änderungen und Anpassung der Benutzeroberfläche
     public void saveChanges() throws IOException {
