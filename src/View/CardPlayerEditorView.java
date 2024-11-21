@@ -7,6 +7,7 @@ import Model.FlashCard;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 // Klasse für die grafische Benutzeroberfläche
@@ -74,7 +75,8 @@ public class CardPlayerEditorView {
         JLabel overviewLabel = new JLabel("Kartenübersicht");
         importButton = new JButton("Kartenset importieren");
         importButton.setFont(new Font("Arial", Font.BOLD, 14));
-        importButton.addActionListener(e -> controller.importCardSet(frame));
+        File testFile = null;
+        importButton.addActionListener(e -> controller.importCardSet(frame, testFile));
 
         topPanel.add(overviewLabel);
         topPanel.add(importButton);

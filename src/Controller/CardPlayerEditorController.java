@@ -37,7 +37,7 @@ public class CardPlayerEditorController {
         this.progressLabel = progressLabel;
         this.currentCardIndex = 0;
     }
-    public void importCardSet(JFrame frame) {
+    public void importCardSet(JFrame frame, File testFile) {
         JFileChooser fileChooser = new JFileChooser();
         int returnValue = fileChooser.showOpenDialog(frame);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
