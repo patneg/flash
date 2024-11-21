@@ -16,7 +16,7 @@ public class CardCreatorController {
 
     //Konstruktur für den CardcreatorController mit der View
     //@param cardCreatorView die zu steuernde CardCreatorView; darf nicht null sein
-    //@throws IllegalArgumentException wenn cardCreatorView null ist
+    //@throws IllegalArgumentException, wenn cardCreatorView null ist
     public CardCreatorController(CardCreatorView cardCreatorView) {
         if (cardCreatorView == null) {
             System.out.println("Fehler: CardCreatorView ist null im CardCreatorController!");
