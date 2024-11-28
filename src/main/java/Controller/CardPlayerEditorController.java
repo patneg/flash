@@ -1,5 +1,6 @@
 package Controller;
 
+
 import Model.CardManager;
 import Model.FlashCard;
 
@@ -37,20 +38,29 @@ public class CardPlayerEditorController {
         this.progressLabel = progressLabel;
         this.currentCardIndex = 0;
     }
+
+
+    public void setCurrentFile(File file) {
+        this.currentFile = file;
+    }
+
+    public void setCurrentCardIndex(int index) {
+        this.currentCardIndex = index;
+    }
     public void importCardSet(JFrame frame, File testFile) {
         JFileChooser fileChooser = new JFileChooser();
-        int returnValue = fileChooser.showOpenDialog(frame);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            try {
+        try {
+            int returnValue = fileChooser.showOpenDialog(frame);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
                 cardManager.loadCardsFromFile(selectedFile);
                 currentFile = selectedFile;
                 updateCardList();
-                JOptionPane.showMessageDialog(frame, "Card set imported successfully!");
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(frame, "Error importing card set.");
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(frame, "Karten erfolgreich importiert!");
             }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "Fehler beim Importieren der Karten: " + e.getMessage(), "Importfehler", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
     public CardPlayerEditorController(CardManager cardManager) {
@@ -97,8 +107,15 @@ public class CardPlayerEditorController {
 
 
     // Methode zur Speicherung von Änderungen und Anpassung der Benutzeroberfläche
-    public void saveChanges() throws IOException {
-        if (currentCardIndex >= 0 && currentCardIndex < cardManager.size() && currentFile != null) {
+    public void saveChanges() {
+        try {
+            if (currentCardIndex < 0 || currentCardIndex >= cardManager.size()) {
+                throw new IllegalStateException("Kein gültiger Kartenindex vorhanden.");
+            }
+            if (currentFile == null) {
+                throw new IllegalStateException("Keine Datei zum Speichern verfügbar.");
+            }
+
             FlashCard updatedCard = new FlashCard(questionArea.getText(), answerArea.getText());
             cardManager.updateFlashCard(currentCardIndex, updatedCard);
             cardManager.saveCardsToFile(currentFile);
@@ -108,13 +125,20 @@ public class CardPlayerEditorController {
             saveButton.setEnabled(false);
 
             // Feedback für den User
-            JOptionPane.showMessageDialog(null, "Erfolgreich gespeichert!", "Speichern bestätigen", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Änderungen erfolgreich gespeichert!", "Speichern bestätigen", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IllegalStateException | IOException e) {
+            JOptionPane.showMessageDialog(null, "Fehler beim Speichern: " + e.getMessage(), "Speicherfehler", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 
     // Methode für die Löschung von Karten und Speicherung der Änderungen
-    public void deleteCurrentCard() throws IOException {
-        if (currentCardIndex >= 0 && currentCardIndex < cardManager.size()) {
+    public void deleteCurrentCard() {
+        try {
+            if (currentCardIndex < 0 || currentCardIndex >= cardManager.size()) {
+                throw new IllegalStateException("Kein gültiger Kartenindex vorhanden.");
+            }
+
             int confirmation = JOptionPane.showConfirmDialog(null, "Sind Sie sicher, dass Sie diese Karte löschen möchten?", "Löschen bestätigen", JOptionPane.YES_NO_OPTION);
             if (confirmation == JOptionPane.YES_OPTION) {
                 cardManager.deleteFlashCard(currentCardIndex);
@@ -124,45 +148,66 @@ public class CardPlayerEditorController {
                 updateCardList(); // Aktualisiert die Liste, um die gelöschte Karte nicht mehr anzuzeigen
                 JOptionPane.showMessageDialog(null, "Karte gelöscht und Änderungen erfolgreich gespeichert!");
 
-                // Wenn der currentCardIndex grösser als 0 ist, wird er um 1 verringert und zeigt die vorherige Karte an
+                // Aktualisieren der Benutzeroberfläche
                 if (currentCardIndex > 0) {
                     currentCardIndex--;
                 }
-                // Wenn der cardManager nach dem Löschen nicht leer ist, wird die Karte geladen welche nun in dieser Position ist
                 if (!cardManager.isEmpty()) {
                     loadCardFromList(currentCardIndex);
                 } else {
-                    questionArea.setText("");
-                    answerArea.setText("");
-                    progressLabel.setText("0/0");
-                    saveButton.setEnabled(false);
-                    showAnswerButton.setEnabled(false); // Antwort Anzeigen deaktivieren, falls keine Karten mehr vorhanden
+                    resetUI();
                 }
             }
+        } catch (IllegalStateException | IOException e) {
+            JOptionPane.showMessageDialog(null, "Fehler beim Löschen: " + e.getMessage(), "Löschfehler", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 
+    // Methode zum Zurücksetzen der UI, wenn keine Karten mehr vorhanden sind
+    private void resetUI() {
+        questionArea.setText("");
+        answerArea.setText("");
+        progressLabel.setText("0/0");
+        saveButton.setEnabled(false);
+        showAnswerButton.setEnabled(false);
+    }
+
+
     // Die Methode lädt eine Karte aus der Liste anhand eines Indexwerts und aktualisiert die Benutzeroberfläche
     public void loadCardFromList(int index) {
-        if (index >= 0 && index < cardManager.size()) {
+        try {
+            if (index < 0 || index >= cardManager.size()) {
+                throw new IllegalArgumentException("Ungültiger Kartenindex.");
+            }
+
             FlashCard card = cardManager.getFlashCards().get(index);
             currentCardIndex = index;
             questionArea.setText(card.getQuestion());
             answerArea.setText(card.getAnswer());
-            answerArea.setVisible(false); // Verstecken der Antwort, wenn eine neue Karte geladen wird
-            showAnswerButton.setEnabled(true); // Aktivieren des Antwort-Buttons, wenn neue Karte geladen wird
+            answerArea.setVisible(false); // Verstecken der Antwort
+            showAnswerButton.setEnabled(true);
             updateProgressLabel();
-            saveButton.setEnabled(false); // Speichern-Button wird zurückgesetzt, da keine Änderungen vorgenommen wurden
+            saveButton.setEnabled(false);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "Fehler beim Laden der Karte: " + e.getMessage(), "Ladefehler", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 
+
     // Methode zur Aktualisierung der angezeigten Karten in der Benutzeroberfläche
     public void updateCardList() {
-        listModel.clear();
-        for (FlashCard card : cardManager.getFlashCards()) {
-            listModel.addElement(card);
+        try {
+            listModel.clear();
+            for (FlashCard card : cardManager.getFlashCards()) {
+                listModel.addElement(card);
+            }
+            updateProgressLabel();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Fehler beim Aktualisieren der Kartenliste: " + e.getMessage(), "Listenfehler", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
-        updateProgressLabel(); // Fortschrittsanzeige wird aktualisiert
     }
 
     // Methode für die Aktualisierung der Fortschrittsanzeige
@@ -170,9 +215,5 @@ public class CardPlayerEditorController {
         progressLabel.setText((currentCardIndex + 1) + "/" + cardManager.size());
 
     }
-
-    // Unit Test
-
-
 }
 

@@ -20,7 +20,7 @@ public class CardCreatorView {
     private JMenuItem saveMenuItem;
     private JFrame frame;
 
-    //Konstruktor für die CardCreatorView. Initialisiert das GUI und seine Komponenten.
+    //Konstruktor für die View.CardCreatorView. Initialisiert das GUI und seine Komponenten.
     public CardCreatorView() {
         //Initialisierung des Hauptfensters
         frame = new JFrame("Lernkarten-Ersteller");

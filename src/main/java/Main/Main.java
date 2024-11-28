@@ -1,6 +1,4 @@
 package Main;
-
-
 import Controller.CardCreatorController;
 import Controller.CardPlayerEditorController;
 import Controller.MainMenuController;
@@ -22,6 +20,8 @@ public class Main {
             new MainMenuController(mainMenuView, cardManager);
         });
     }
+
+
 
     // Methode um den Karten-Ersteller zu öffnen
     public static void openCardCreator() {

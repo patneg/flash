@@ -1,14 +1,13 @@
 package View;
 
-import Controller.CardPlayerEditorController;
 import Model.CardManager;
 import Model.FlashCard;
+import Controller.CardPlayerEditorController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.IOException;
 
 // Klasse für die grafische Benutzeroberfläche
 public class CardPlayerEditorView {
@@ -21,7 +20,7 @@ public class CardPlayerEditorView {
     private CardManager cardManager;
     private CardPlayerEditorController controller;
 
-    // Konstruktor der Klasse CardPlayerEditorView
+    // Konstruktor der Klasse View.CardPlayerEditorView
     public CardPlayerEditorView(CardManager cardManager) {
         this.cardManager = cardManager;
         initializeUI();
@@ -129,23 +128,13 @@ public class CardPlayerEditorView {
         nextButton.addActionListener(createNavigationAction(1));
 
         saveButton.addActionListener(e -> {
-            try {
-                controller.saveChanges();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(frame, "Speichern fehlgeschlagen.");
-                ex.printStackTrace();
-            }
+            controller.saveChanges();
         });
 
         deleteButton = new JButton("Karte löschen");
         deleteButton.setFont(new Font("Arial", Font.BOLD, 24));
         deleteButton.addActionListener(e -> {
-            try {
-                controller.deleteCurrentCard();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(frame, "Löschen fehlgeschlagen.");
-                ex.printStackTrace();
-            }
+            controller.deleteCurrentCard();
         });
 
         // Panel für die Button unten
