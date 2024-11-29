@@ -23,6 +23,7 @@ public class CardPlayerEditorController {
     private int currentCardIndex; // Speichert den Index der aktuell angezeigten Karte innerhalb der Liste
     private File currentFile; // File in welchem die Karten gespeichert werden
 
+
     // Der Konstruktor CardPlayerEditorController wird verwendet,
     // um die Klasse zu instanziieren und alle Abhängigkeiten bereitzustellen
     public CardPlayerEditorController(CardManager cardManager, JTextArea questionArea, JTextArea answerArea,
@@ -164,6 +165,8 @@ public class CardPlayerEditorController {
         }
     }
 
+
+
     // Methode zum Zurücksetzen der UI, wenn keine Karten mehr vorhanden sind
     public void resetUI() {
         questionArea.setText("");
@@ -185,10 +188,10 @@ public class CardPlayerEditorController {
             currentCardIndex = index;
             questionArea.setText(card.getQuestion());
             answerArea.setText(card.getAnswer());
-            answerArea.setVisible(false); // Verstecken der Antwort
-            showAnswerButton.setEnabled(true);
-            updateProgressLabel();
-            saveButton.setEnabled(false);
+            answerArea.setVisible(false); // Antwortfeld verstecken
+            showAnswerButton.setEnabled(true); // Antwort anzeigen aktivieren
+            updateProgressLabel(); // Fortschrittsanzeige aktualisieren
+            saveButton.setEnabled(false); // Speichern deaktivieren
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, "Fehler beim Laden der Karte: " + e.getMessage(), "Ladefehler", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
@@ -213,7 +216,6 @@ public class CardPlayerEditorController {
     // Methode für die Aktualisierung der Fortschrittsanzeige
     public void updateProgressLabel() {
         progressLabel.setText((currentCardIndex + 1) + "/" + cardManager.size());
-
     }
 }
 
