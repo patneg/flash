@@ -50,17 +50,65 @@ public class CardPlayerEditorController {
     }
     public void importCardSet(JFrame frame, File testFile) {
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Kartensets (*.txt)", "txt")); // Optional: Dateitypen einschränken
+
         try {
             int returnValue = fileChooser.showOpenDialog(frame);
             if (returnValue == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
-                cardManager.loadCardsFromFile(selectedFile);
-                currentFile = selectedFile;
-                updateCardList();
-                JOptionPane.showMessageDialog(frame, "Karten erfolgreich importiert!");
+
+                // Validieren, ob die Datei existiert und lesbar ist
+                if (!selectedFile.exists() || !selectedFile.canRead()) {
+                    JOptionPane.showMessageDialog(
+                            frame,
+                            "Die ausgewählte Datei ist nicht lesbar oder existiert nicht.",
+                            "Fehler beim Importieren",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+
+                // Versuchen, Karten aus der Datei zu laden
+                try {
+                    cardManager.loadCardsFromFile(selectedFile);
+                    if (cardManager.isEmpty()) { // Überprüfen, ob keine Karten geladen wurden
+                        JOptionPane.showMessageDialog(
+                                frame,
+                                "Die Datei enthält keine gültigen Karten.",
+                                "Importfehler",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                        return;
+                    }
+
+                    currentFile = selectedFile;
+                    updateCardList();
+                    JOptionPane.showMessageDialog(frame, "Karten erfolgreich importiert!");
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(
+                            frame,
+                            "Fehler beim Importieren der Datei: " + e.getMessage(),
+                            "Importfehler",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(
+                            frame,
+                            "Die Datei hat ein ungültiges Format und konnte nicht geladen werden.",
+                            "Importfehler",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    e.printStackTrace();
+                }
             }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(frame, "Fehler beim Importieren der Karten: " + e.getMessage(), "Importfehler", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    frame,
+                    "Ein unerwarteter Fehler ist aufgetreten: " + e.getMessage(),
+                    "Importfehler",
+                    JOptionPane.ERROR_MESSAGE
+            );
             e.printStackTrace();
         }
     }

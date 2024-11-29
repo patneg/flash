@@ -87,12 +87,20 @@ public class CardCreatorView {
         questionArea.requestFocus();
     }
 
-    //Methode zum Speichern der Lernkarten in einer Datei
     public void promptForFile(List<FlashCard> flashCardList) {
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Speichern als");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Textdateien (*.txt)", "txt"));
+
         int userSelection = fileChooser.showSaveDialog(frame);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
+
+            // Automatisch ".txt" hinzufügen, falls nicht vorhanden
+            if (!fileToSave.getName().toLowerCase().endsWith(".txt")) {
+                fileToSave = new File(fileToSave.getAbsolutePath() + ".txt");
+            }
+
             saveFlashCardsToFile(fileToSave, flashCardList);
         }
     }
