@@ -82,6 +82,23 @@ public class CardPlayerEditorView {
 
         // Kartenliste Formatierung
         cardList.setFont(new Font("Arial", Font.PLAIN, 18));
+
+        // Renderer für die Liste festlegen, sodass nur die Frage angezeigt wird
+        cardList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                // Standard-Renderer verwenden
+                JLabel renderer = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                // Nur die Frage der FlashCard anzeigen
+                if (value instanceof FlashCard) {
+                    FlashCard card = (FlashCard) value;
+                    renderer.setText(card.getQuestion()); // Nur die Frage setzen
+                }
+                return renderer;
+            }
+        });
+
         cardList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && !cardList.isSelectionEmpty()) {
                 controller.loadCardFromList(cardList.getSelectedIndex());
