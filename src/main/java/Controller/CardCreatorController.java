@@ -3,7 +3,6 @@ package Controller;
 import Model.FlashCard;
 import View.CardCreatorView;
 
-import jakarta.annotation.Nonnull; // Alternativ: org.jetbrains.annotations oder jakarta.annotation
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,61 +13,47 @@ import java.util.ArrayList;
  * Verarbeitet Benutzereingaben und verwaltet die Erstellung der Lernkarten.
  */
 public class CardCreatorController {
-
-    private static final String ERROR_EMPTY_FIELDS = "Frage und Antwort dürfen nicht leer sein!";
-    private static final String ERROR_ADD_CARD = "Fehler beim Hinzufügen der Karte: ";
-    private static final String ERROR_NO_CARDS_TO_SAVE = "Keine Karten zum Speichern vorhanden!";
-    private static final String ERROR_SAVE_CARDS = "Fehler beim Speichern der Karten: ";
-
-    private CardCreatorView cardCreatorView;
-    private final ArrayList<FlashCard> flashCardList;
+    private final CardCreatorView cardCreatorView; // Die zu steuernde View
+    private final ArrayList<FlashCard> flashCardList; // Liste der erstellten Karten
 
     /**
      * Konstruktor für den CardCreatorController.
      *
-     * @param cardCreatorView Die View, die vom Controller verwaltet wird. Darf nicht null sein.
+     * @param cardCreatorView Die zu steuernde CardCreatorView; darf nicht null sein.
+     * @throws IllegalArgumentException Wenn cardCreatorView null ist.
      */
-    public CardCreatorController(@Nonnull CardCreatorView cardCreatorView) {
+    public CardCreatorController(CardCreatorView cardCreatorView) {
         if (cardCreatorView == null) {
             throw new IllegalArgumentException("CardCreatorView darf nicht null sein.");
         }
         this.cardCreatorView = cardCreatorView;
         this.flashCardList = new ArrayList<>();
+
+        // Event-Handler mit der View verbinden
+        this.cardCreatorView.setNextButtonListener(createNextCardListener());
+        this.cardCreatorView.setSaveMenuItemListener(createSaveMenuListener());
     }
 
     /**
      * Erstellt einen ActionListener für den "Nächste Karte"-Button.
      *
-     * @return Ein ActionListener-Objekt.
+     * @return Der ActionListener für den "Nächste Karte"-Button.
      */
-    public ActionListener createNextCardListener() {
+    private ActionListener createNextCardListener() {
         return new NextCardListener();
     }
 
     /**
      * Erstellt einen ActionListener für das "Speichern"-Menüelement.
      *
-     * @return Ein ActionListener-Objekt.
+     * @return Der ActionListener für das "Speichern"-Menüelement.
      */
-    public ActionListener createSaveMenuListener() {
+    private ActionListener createSaveMenuListener() {
         return new SaveMenuListener();
     }
 
     /**
-     * Setzt die View für den Controller.
-     *
-     * @param cardCreatorView Die neue View. Darf nicht null sein.
-     */
-    public void setCardCreatorView(@Nonnull CardCreatorView cardCreatorView) {
-        if (cardCreatorView == null) {
-            throw new IllegalArgumentException("CardCreatorView darf nicht null sein.");
-        }
-        this.cardCreatorView = cardCreatorView;
-    }
-
-    /**
      * Innere Klasse für den "Nächste Karte"-Listener.
-     * Verarbeitet die Eingaben für die nächste Karte.
      */
     private class NextCardListener implements ActionListener {
         @Override
@@ -77,50 +62,72 @@ public class CardCreatorController {
                 String questionText = cardCreatorView.getQuestionText();
                 String answerText = cardCreatorView.getAnswerText();
 
+                // Validierung: Beide Felder dürfen nicht leer sein
                 if (questionText.isEmpty() || answerText.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, ERROR_EMPTY_FIELDS, "Eingabefehler", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Frage und Antwort dürfen nicht leer sein!",
+                            "Eingabefehler",
+                            JOptionPane.WARNING_MESSAGE
+                    );
                     return;
                 }
 
+                // Neue Karte erstellen und hinzufügen
                 FlashCard card = new FlashCard(questionText, answerText);
                 flashCardList.add(card);
                 cardCreatorView.clearCard();
-
-                System.out.println("Anzahl der Karten: " + flashCardList.size());
+                System.out.println("Karte hinzugefügt. Aktuelle Anzahl: " + flashCardList.size());
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, ERROR_ADD_CARD + e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Fehler beim Hinzufügen der Karte: " + e.getMessage(),
+                        "Fehler",
+                        JOptionPane.ERROR_MESSAGE
+                );
                 e.printStackTrace();
             }
         }
     }
 
     /**
-     * Innere Klasse für den "Speichern"-Menülistener.
-     * Verarbeitet die Eingaben und speichert die Karten in eine Datei.
+     * Innere Klasse für den "Speichern"-Menü-Listener.
      */
     private class SaveMenuListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent event) {
             try {
-                // Einfügen der aktuellen Karte, falls nicht leer
                 String questionText = cardCreatorView.getQuestionText();
                 String answerText = cardCreatorView.getAnswerText();
 
+                // Aktuelle Karte hinzufügen, falls Felder gefüllt
                 if (!questionText.isEmpty() && !answerText.isEmpty()) {
                     FlashCard card = new FlashCard(questionText, answerText);
                     flashCardList.add(card);
                     cardCreatorView.clearCard();
                 }
 
+                // Überprüfung, ob Karten vorhanden sind
                 if (flashCardList.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, ERROR_NO_CARDS_TO_SAVE, "Speicherfehler", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Keine Karten zum Speichern vorhanden!",
+                            "Speicherfehler",
+                            JOptionPane.WARNING_MESSAGE
+                    );
                     return;
                 }
 
-                // Öffnen des Datei-Dialogs
+                // Datei-Dialog zum Speichern öffnen
                 cardCreatorView.promptForFile(flashCardList);
+                System.out.println("Speichern erfolgreich initiiert.");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, ERROR_SAVE_CARDS + e.getMessage(), "Speicherfehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Fehler beim Speichern der Karten: " + e.getMessage(),
+                        "Speicherfehler",
+                        JOptionPane.ERROR_MESSAGE
+                );
                 e.printStackTrace();
             }
         }
