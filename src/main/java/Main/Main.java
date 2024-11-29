@@ -61,9 +61,6 @@ public class Main {
      * @throws IllegalArgumentException Falls der cardManager null ist.
      */
     public static void openCardPlayerEditor(@Nonnull CardManager cardManager) {
-        if (cardManager == null) {
-            throw new IllegalArgumentException("CardManager darf nicht null sein.");
-        }
 
         // Initialisierung des Controllers und der View
         CardPlayerEditorController controller = new CardPlayerEditorController(cardManager);
