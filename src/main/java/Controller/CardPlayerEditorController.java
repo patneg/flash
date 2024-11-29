@@ -215,7 +215,11 @@ public class CardPlayerEditorController {
 
     // Methode für die Aktualisierung der Fortschrittsanzeige
     public void updateProgressLabel() {
-        progressLabel.setText((currentCardIndex + 1) + "/" + cardManager.size());
+        if (cardManager.isEmpty()) {
+            progressLabel.setText("0/0");
+        } else {
+            progressLabel.setText((currentCardIndex + 1) + "/" + cardManager.size());
+        }
     }
 }
 
