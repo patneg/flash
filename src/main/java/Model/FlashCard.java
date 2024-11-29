@@ -74,6 +74,6 @@ public class FlashCard {
      */
     @Override
     public String toString() {
-        return question;
+        return "Frage: " + question + ", Antwort: " + answer;
     }
 }

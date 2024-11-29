@@ -165,7 +165,7 @@ public class CardPlayerEditorController {
     }
 
     // Methode zum Zurücksetzen der UI, wenn keine Karten mehr vorhanden sind
-    private void resetUI() {
+    public void resetUI() {
         questionArea.setText("");
         answerArea.setText("");
         progressLabel.setText("0/0");
@@ -211,7 +211,7 @@ public class CardPlayerEditorController {
     }
 
     // Methode für die Aktualisierung der Fortschrittsanzeige
-    private void updateProgressLabel() {
+    public void updateProgressLabel() {
         progressLabel.setText((currentCardIndex + 1) + "/" + cardManager.size());
 
     }

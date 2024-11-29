@@ -129,5 +129,87 @@ class CardPlayerEditorControllerTest {
         System.out.println("✅ Änderungen wurden erfolgreich gespeichert.");
     }
 
-    // Weitere Tests bleiben unverändert...
+    @Test
+    void testLoadCardFromList() {
+        System.out.println("Teste: Laden einer Karte aus der Liste...");
+
+        Model.FlashCard card = new Model.FlashCard("Frage", "Antwort");
+        cardManager.getFlashCards().add(card);
+        controller.loadCardFromList(0);
+
+        assertEquals("Frage", questionArea.getText(), "Die Frage sollte korrekt geladen werden.");
+        assertEquals("Antwort", answerArea.getText(), "Die Antwort sollte korrekt geladen werden.");
+        assertFalse(answerArea.isVisible(), "Die Antwort sollte zunächst nicht sichtbar sein.");
+        assertTrue(showAnswerButton.isEnabled(), "Der 'Antwort anzeigen'-Button sollte aktiviert sein.");
+        System.out.println("✅ Karte wurde erfolgreich geladen.");
+    }
+
+    @Test
+    void testDeleteCurrentCard() {
+        System.out.println("Teste: Löschen der aktuellen Karte...");
+
+        Model.FlashCard card1 = new Model.FlashCard("Frage 1", "Antwort 1");
+        Model.FlashCard card2 = new Model.FlashCard("Frage 2", "Antwort 2");
+        cardManager.getFlashCards().add(card1);
+        cardManager.getFlashCards().add(card2);
+
+        controller.setCurrentCardIndex(0);
+        controller.deleteCurrentCard();
+
+        assertEquals(1, cardManager.size(), "Es sollte noch eine Karte übrig sein.");
+        assertEquals("Frage 2", cardManager.getFlashCards().get(0).getQuestion(), "Die verbliebene Karte sollte 'Frage 2' sein.");
+        System.out.println("✅ Karte wurde erfolgreich gelöscht.");
+    }
+
+    @Test
+    void testUpdateCardList() {
+        System.out.println("Teste: Aktualisieren der Kartenliste...");
+
+        Model.FlashCard card1 = new Model.FlashCard("Frage 1", "Antwort 1");
+        Model.FlashCard card2 = new Model.FlashCard("Frage 2", "Antwort 2");
+        cardManager.getFlashCards().add(card1);
+        cardManager.getFlashCards().add(card2);
+
+        controller.updateCardList();
+
+        assertEquals(2, listModel.size(), "Die Kartenliste sollte zwei Karten enthalten.");
+        assertEquals("Frage 1", listModel.get(0).getQuestion(), "Die erste Karte sollte korrekt geladen werden.");
+        assertEquals("Frage 2", listModel.get(1).getQuestion(), "Die zweite Karte sollte korrekt geladen werden.");
+        System.out.println("✅ Kartenliste wurde erfolgreich aktualisiert.");
+    }
+
+    @Test
+    void testResetUI() {
+        System.out.println("Teste: Zurücksetzen der Benutzeroberfläche...");
+
+        questionArea.setText("Frage");
+        answerArea.setText("Antwort");
+        progressLabel.setText("1/1");
+        saveButton.setEnabled(true);
+        showAnswerButton.setEnabled(true);
+
+        controller.resetUI();
+
+        assertEquals("", questionArea.getText(), "Das Fragefeld sollte leer sein.");
+        assertEquals("", answerArea.getText(), "Das Antwortfeld sollte leer sein.");
+        assertEquals("0/0", progressLabel.getText(), "Die Fortschrittsanzeige sollte zurückgesetzt sein.");
+        assertFalse(saveButton.isEnabled(), "Der Speichern-Button sollte deaktiviert sein.");
+        assertFalse(showAnswerButton.isEnabled(), "Der 'Antwort anzeigen'-Button sollte deaktiviert sein.");
+        System.out.println("✅ Benutzeroberfläche wurde erfolgreich zurückgesetzt.");
+    }
+
+    @Test
+    void testUpdateProgressLabel() {
+        System.out.println("Teste: Aktualisieren der Fortschrittsanzeige...");
+
+        Model.FlashCard card1 = new Model.FlashCard("Frage 1", "Antwort 1");
+        cardManager.getFlashCards().add(card1);
+        controller.setCurrentCardIndex(0);
+
+        controller.updateProgressLabel();
+
+        assertEquals("1/1", progressLabel.getText(), "Die Fortschrittsanzeige sollte '1/1' anzeigen.");
+        System.out.println("✅ Fortschrittsanzeige wurde erfolgreich aktualisiert.");
+    }
+
 }
