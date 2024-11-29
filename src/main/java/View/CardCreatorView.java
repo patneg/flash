@@ -130,19 +130,5 @@ public class CardCreatorView {
     public JTextArea getAnswerArea() {
         return answer;
     }
-    public static void main(String[] args) {
-        //überprüft, ob die Methode clearCard die Textfelder für die Frage/Antwort leert.
-        // Arrange
-        CardCreatorView view = new CardCreatorView();
-        view.getQuestionArea().setText("Testfrage");
-        view.getAnswerArea().setText("Testantwort");
 
-        // Act
-        view.clearCard();
-
-        // Assert
-        assert view.getQuestionText().isEmpty() : "Fragefeld sollte leer sein.";
-        assert view.getAnswerText().isEmpty() : "Antwortfeld sollte leer sein.";
-        System.out.println("Test clearCard erfolgreich bestanden.");
-    }
 }

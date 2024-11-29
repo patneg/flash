@@ -1,4 +1,5 @@
 package Main;
+
 import Controller.CardCreatorController;
 import Controller.CardPlayerEditorController;
 import Controller.MainMenuController;
@@ -7,9 +8,25 @@ import View.CardCreatorView;
 import View.CardPlayerEditorView;
 import View.MainMenuView;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 
+/**
+ * Hauptklasse, die die Anwendung initialisiert und das Hauptmenü, den Karten-Ersteller sowie den Karten-Editor verwaltet.
+ */
 public class Main {
+
+    private static final String OPEN_CARD_CREATOR_MESSAGE = "Karten-Ersteller wird geöffnet...";
+    private static final String CARD_CREATOR_INITIALIZED = "CardCreatorView erfolgreich initialisiert.";
+    private static final String CARD_CREATOR_NULL_MESSAGE = "CardCreatorView ist null!";
+    private static final String CARD_EDITOR_INITIALIZED = "Editor & Player erfolgreich initialisiert.";
+
+    /**
+     * Einstiegspunkt der Anwendung. Initialisiert das Hauptmenü und den CardManager.
+     *
+     * @param args Kommandozeilenargumente (werden nicht verwendet).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Initialisierung des CardManagers
@@ -21,33 +38,37 @@ public class Main {
         });
     }
 
-
-
-    // Methode um den Karten-Ersteller zu öffnen
+    /**
+     * Öffnet den Karten-Ersteller und initialisiert dessen Controller.
+     * Falls die View nicht erstellt werden kann, wird eine IllegalStateException geworfen.
+     */
     public static void openCardCreator() {
-        System.out.println("Lernkarten-Ersteller öffnen..."); // Debug
-        CardCreatorView cardCreatorView = new CardCreatorView(); // Ensure this line executes correctly
+        System.out.println(OPEN_CARD_CREATOR_MESSAGE); // Debug-Ausgabe
+        CardCreatorView cardCreatorView = new CardCreatorView();
+
         if (cardCreatorView == null) {
-            System.out.println("CardCreatorView is null!"); // Debug if the instance is not created
+            throw new IllegalStateException(CARD_CREATOR_NULL_MESSAGE);
         } else {
-            System.out.println("CardCreatorView erfolgreich initialisiert.");
+            System.out.println(CARD_CREATOR_INITIALIZED);
             new CardCreatorController(cardCreatorView);
         }
     }
 
-    // Methode, um den Editor & Player zu starten
-    public static void openCardPlayerEditor(CardManager cardManager) {
+    /**
+     * Öffnet den Karten-Editor und initialisiert dessen Controller und View.
+     *
+     * @param cardManager Die Instanz des CardManagers. Falls null, wird eine IllegalArgumentException geworfen.
+     * @throws IllegalArgumentException Falls der cardManager null ist.
+     */
+    public static void openCardPlayerEditor(@Nonnull CardManager cardManager) {
         if (cardManager == null) {
-            cardManager = new CardManager();
+            throw new IllegalArgumentException("CardManager darf nicht null sein.");
         }
 
-        // Controller erstellen
+        // Initialisierung des Controllers und der View
         CardPlayerEditorController controller = new CardPlayerEditorController(cardManager);
-
-        // Controller der VIew übergeben
         CardPlayerEditorView editorView = new CardPlayerEditorView(cardManager);
 
-
-        System.out.println("Editor & Player erfolgreich initialisiert.");
+        System.out.println(CARD_EDITOR_INITIALIZED);
     }
 }
