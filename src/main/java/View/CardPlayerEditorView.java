@@ -171,10 +171,22 @@ public class CardPlayerEditorView {
 
     private ActionListener createNavigationAction(int direction) {
         return e -> {
+            boolean hasUnsavedChanges = saveButton.isEnabled(); // Überprüfen, ob der Speichern-Button aktiv ist
+            if (hasUnsavedChanges) {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        "Es gibt ungespeicherte Änderungen. Bitte speichern Sie zuerst, bevor Sie fortfahren.",
+                        "Ungespeicherte Änderungen",
+                        JOptionPane.WARNING_MESSAGE
+                );
+                return; // Navigation abbrechen
+            }
+
             int newIndex = cardList.getSelectedIndex() + direction;
             if (newIndex >= 0 && newIndex < listModel.size()) {
                 cardList.setSelectedIndex(newIndex);
             }
         };
     }
+
 }
