@@ -71,13 +71,13 @@ public class CardPlayerEditorView {
 
         // Oberes Panel mit Button für Import
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel overviewLabel = new JLabel("Kartenübersicht");
+
         importButton = new JButton("Kartenset importieren");
         importButton.setFont(new Font("Arial", Font.BOLD, 14));
         File testFile = null;
         importButton.addActionListener(e -> controller.importCardSet(frame, testFile));
 
-        topPanel.add(overviewLabel);
+
         topPanel.add(importButton);
 
         // Kartenliste Formatierung
