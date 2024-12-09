@@ -10,7 +10,10 @@ import javax.swing.event.DocumentListener;
 import java.io.File;
 import java.io.IOException;
 
-// Controller für den CardPlayerEditor. Importiert Datensets und verwaltet die Änderungen der Karten.
+/**
+ * Controller für den CardPlayerEditor.
+ * Verarbeitet Benutzeraktionen, importiert Datensets und verwaltet Änderungen an Karten.
+ */
 public class CardPlayerEditorController {
     private CardManager cardManager; // Klasse zum Laden, Speichern und Bearbeiten von Karten
     private DefaultListModel<FlashCard> listModel; // Verwaltet die Liste mit Flash-karten
@@ -24,8 +27,20 @@ public class CardPlayerEditorController {
     private File currentFile; // File in welchem die Karten gespeichert werden
 
 
-    // Der Konstruktor CardPlayerEditorController wird verwendet,
-    // um die Klasse zu instanziieren und alle Abhängigkeiten bereitzustellen
+
+    /**
+     * Konstruktor für den CardPlayerEditorController.
+     * Initialisiert alle Abhängigkeiten und stellt sicher, dass diese korrekt verknüpft werden.
+     *
+     * @param cardManager      Der CardManager zum Verwalten der Karten; darf nicht null sein.
+     * @param questionArea     Das Textfeld für die Frage; darf nicht null sein.
+     * @param answerArea       Das Textfeld für die Antwort; darf nicht null sein.
+     * @param saveButton       Der Button zum Speichern; darf nicht null sein.
+     * @param showAnswerButton Der Button zum Anzeigen der Antwort; darf nicht null sein.
+     * @param listModel        Das Modell für die Kartenliste; darf nicht null sein.
+     * @param cardList         Die Kartenliste; darf nicht null sein.
+     * @param progressLabel    Das Fortschrittslabel; darf nicht null sein.
+     */
     public CardPlayerEditorController(CardManager cardManager, JTextArea questionArea, JTextArea answerArea,
                                       JButton saveButton, JButton showAnswerButton, DefaultListModel<FlashCard> listModel,
                                       JList<FlashCard> cardList, JLabel progressLabel) {
@@ -40,14 +55,30 @@ public class CardPlayerEditorController {
         this.currentCardIndex = 0;
     }
 
-
+    /**
+     * Setzt die aktuelle Datei, in der die Karten gespeichert werden sollen.
+     *
+     * @param file Die Datei; darf null sein.
+     */
     public void setCurrentFile(File file) {
         this.currentFile = file;
     }
 
+    /**
+     * Setzt den Index der aktuell angezeigten Karte.
+     *
+     * @param index Der Index der Karte; muss innerhalb des gültigen Bereichs liegen.
+     */
     public void setCurrentCardIndex(int index) {
         this.currentCardIndex = index;
     }
+
+    /**
+     * Importiert ein Kartenset aus einer Datei.
+     *
+     * @param frame     Das übergeordnete JFrame für den Dateiauswahldialog; darf nicht null sein.
+     * @param testFile  Eine Datei für automatisierte Tests; optional.
+     */
     public void importCardSet(JFrame frame, File testFile) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Kartensets (*.txt)", "txt")); // Optional: Dateitypen einschränken
@@ -112,10 +143,20 @@ public class CardPlayerEditorController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Standardkonstruktor für CardPlayerEditorController.
+     * Dieser Konstruktor wird benötigt, wenn der Controller ohne initialisierte Komponenten erstellt werden muss.
+     *
+     * @param cardManager Der CardManager zur Verwaltung der Karten (derzeit nicht verwendet).
+     */
     public CardPlayerEditorController(CardManager cardManager) {
+        // Standardkonstruktor ohne Initialisierung
     }
 
-    // Methode zur Überwachung der questionArea und answerArea auf Änderungen
+    /**
+     * Fügt Listener hinzu, um Änderungen in den Textfeldern zu überwachen.
+     */
     public void addTextChangeListeners() {
         DocumentListener docListener = new DocumentListener() {
             @Override
@@ -137,7 +178,9 @@ public class CardPlayerEditorController {
         answerArea.getDocument().addDocumentListener(docListener);
     }
 
-    // Methode zur Prüfung von Veränderungen und Aktivierung des Save-Buttons
+    /**
+     * Prüft auf Änderungen in den Textfeldern und aktiviert den Speichern-Button bei Bedarf.
+     */
     private void checkForChanges() {
         if (currentCardIndex >= 0 && currentCardIndex < cardManager.size()) {
             FlashCard currentCard = cardManager.getFlashCards().get(currentCardIndex);
@@ -147,15 +190,21 @@ public class CardPlayerEditorController {
         }
     }
 
-    // Zeigt die Antwort und deaktiviert danach den Antwort-Button
+    /**
+     * Zeigt die Antwort für die aktuelle Karte an und deaktiviert den Antwort-Button.
+     */
     public void showAnswer() {
         answerArea.setVisible(true);
         showAnswerButton.setEnabled(false);
     }
-    // Methode für den Import eines Kartensets
 
 
-    // Methode zur Speicherung von Änderungen und Anpassung der Benutzeroberfläche
+
+    /**
+     * Speichert Änderungen an der aktuellen Karte und aktualisiert die Benutzeroberfläche.
+     *
+     * @throws IllegalStateException Wenn keine gültige Karte ausgewählt ist oder keine Datei zum Speichern verfügbar ist.
+     */
     public void saveChanges() {
         try {
             if (currentCardIndex < 0 || currentCardIndex >= cardManager.size()) {
@@ -181,7 +230,11 @@ public class CardPlayerEditorController {
         }
     }
 
-    // Methode für die Löschung von Karten und Speicherung der Änderungen
+    /**
+     * Löscht die aktuell ausgewählte Karte und speichert die Änderungen.
+     *
+     * @throws IllegalStateException Wenn keine gültige Karte ausgewählt ist.
+     */
     public void deleteCurrentCard() {
         try {
             if (currentCardIndex < 0 || currentCardIndex >= cardManager.size()) {
@@ -215,7 +268,9 @@ public class CardPlayerEditorController {
 
 
 
-    // Methode zum Zurücksetzen der UI, wenn keine Karten mehr vorhanden sind
+    /**
+     * Setzt die Benutzeroberfläche zurück, wenn keine Karten mehr vorhanden sind.
+     */
     public void resetUI() {
         questionArea.setText("");
         answerArea.setText("");
@@ -225,7 +280,12 @@ public class CardPlayerEditorController {
     }
 
 
-    // Die Methode lädt eine Karte aus der Liste anhand eines Indexwerts und aktualisiert die Benutzeroberfläche
+    /**
+     * Lädt eine Karte aus der Liste anhand ihres Indexes und aktualisiert die Benutzeroberfläche.
+     *
+     * @param index Der Index der Karte, die geladen werden soll. Muss im gültigen Bereich liegen.
+     * @throws IllegalArgumentException Wenn der Index außerhalb des gültigen Bereichs liegt.
+     */
     public void loadCardFromList(int index) {
         try {
             if (index < 0 || index >= cardManager.size()) {
@@ -247,7 +307,9 @@ public class CardPlayerEditorController {
     }
 
 
-    // Methode zur Aktualisierung der angezeigten Karten in der Benutzeroberfläche
+    /**
+     * Aktualisiert die Liste der Karten, die in der Benutzeroberfläche angezeigt werden.
+     */
     public void updateCardList() {
         try {
             listModel.clear();
@@ -261,7 +323,9 @@ public class CardPlayerEditorController {
         }
     }
 
-    // Methode für die Aktualisierung der Fortschrittsanzeige
+    /**
+     * Aktualisiert die Fortschrittsanzeige basierend auf der Anzahl der Karten.
+     */
     public void updateProgressLabel() {
         if (cardManager.isEmpty()) {
             progressLabel.setText("0/0");

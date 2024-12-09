@@ -1,6 +1,10 @@
 package Model;
 
-// Repräsentiert eine Lernkarte mit einer Frage und einer Antwort
+/**
+ * Repräsentiert eine Lernkarte (FlashCard) mit einer Frage und einer Antwort.
+ * Diese Klasse bietet Methoden zum Abrufen und Setzen von Frage und Antwort,
+ * sowie eine Validierung der Eingaben.
+ */
 public class FlashCard {
     private String question; // Die Frage der FlashCard
     private String answer;   // Die Antwort der FlashCard
@@ -70,7 +74,7 @@ public class FlashCard {
     /**
      * Überschreibt die toString()-Methode, um die FlashCard darzustellen.
      *
-     * @return Die Frage der FlashCard als String.
+     * @return Ein String, der die Frage und Antwort der FlashCard repräsentiert.
      */
     @Override
     public String toString() {

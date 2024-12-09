@@ -9,31 +9,40 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-// Klasse für die grafische Benutzeroberfläche
+/**
+ * Diese Klasse stellt die grafische Benutzeroberfläche für den Karten-Editor und Player bereit.
+ * Sie ermöglicht das Bearbeiten, Navigieren und Speichern von Karten sowie das Importieren von Kartensets.
+ */
 public class CardPlayerEditorView {
-    private JFrame frame;
-    private JTextArea questionArea, answerArea;
-    private JButton showAnswerButton, nextButton, prevButton, importButton, saveButton, deleteButton;
-    private JLabel progressLabel;
-    private DefaultListModel<FlashCard> listModel;
-    private JList<FlashCard> cardList;
-    private CardManager cardManager;
-    private CardPlayerEditorController controller;
+    private JFrame frame; // Hauptfenster der Anwendung
+    private JTextArea questionArea, answerArea; // Textbereiche für Frage und Antwort
+    private JButton showAnswerButton, nextButton, prevButton, importButton, saveButton, deleteButton; // Buttons der Benutzeroberfläche
+    private JLabel progressLabel; // Label zur Anzeige des Fortschritts (z. B. "1/10")
+    private DefaultListModel<FlashCard> listModel; // Modell zur Verwaltung der Kartenliste
+    private JList<FlashCard> cardList; // Liste der angezeigten Karten
+    private CardManager cardManager; // Karten-Manager für die Kartenlogik
+    private CardPlayerEditorController controller; // Controller für die Interaktion zwischen GUI und Logik
 
-    // Konstruktor der Klasse View.CardPlayerEditorView
+    /**
+     * Konstruktor für die Klasse CardPlayerEditorView.
+     *
+     * @param cardManager Der CardManager, der die Karten verwaltet; darf nicht null sein.
+     */
     public CardPlayerEditorView(CardManager cardManager) {
         this.cardManager = cardManager;
         initializeUI();
     }
 
-    // Formatierung und Gestaltung
+    /**
+     * Initialisiert die Benutzeroberfläche der Anwendung.
+     */
     private void initializeUI() {
         frame = new JFrame("Editor & Player"); // Fenster der Anwendung
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Anwendung wird beendet, wenn Fenster geschlossen wird
         frame.setSize(1500, 1100);
         frame.setLayout(new BorderLayout(10, 10));
 
-        // Komponenten
+        // Initialisierung der Komponenten
         questionArea = new JTextArea(10, 50);
         answerArea = new JTextArea(10, 50);
         saveButton = new JButton("Änderungen speichern");
@@ -48,23 +57,25 @@ public class CardPlayerEditorView {
         progressLabel = new JLabel("0/0", SwingConstants.CENTER);
         progressLabel.setFont(new Font("Arial", Font.PLAIN, 24));
 
-        // Controller wird erstellt für die Interaktion zwischen UI und Flashkarten
+        // Initialisierung des Controllers
         controller = new CardPlayerEditorController(
                 cardManager, questionArea, answerArea, saveButton, showAnswerButton, listModel, cardList, progressLabel
         );
 
-
+        // Aufbau der GUI
         setupLeftPanel(); // Linke Seite des Fensters
         setupMainPanel(); // Hauptteil des Fensters
 
 
         frame.setVisible(true); // Rahmen wird sichtbar
         frame.setLocationRelativeTo(null); // Fenster erscheint in der Mitte des Bildschirms
-        controller.updateCardList();
-        controller.addTextChangeListeners();
+        controller.updateCardList(); // Initiale Aktualisierung der Kartenliste
+        controller.addTextChangeListeners(); // Hinzufügen von Listenern für Textänderungen
     }
 
-    // Methode für das linke Panel im Fenster
+    /**
+     * Erstellt und konfiguriert das linke Panel für die Kartenliste.
+     */
     private void setupLeftPanel() {
         JPanel leftPanel = new JPanel(new BorderLayout());
         leftPanel.setPreferredSize(new Dimension(300, 0));
@@ -112,7 +123,9 @@ public class CardPlayerEditorView {
         frame.add(leftPanel, BorderLayout.WEST);
     }
 
-    // Methode für das Haupt-Panel im Fenster
+    /**
+     * Erstellt und konfiguriert das Hauptpanel für die Frage- und Antwortanzeige sowie die Buttons.
+     */
     private void setupMainPanel() {
         JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
         Font mFont = new Font("Arial", Font.BOLD, 32);
@@ -169,6 +182,12 @@ public class CardPlayerEditorView {
         frame.add(mainPanel, BorderLayout.CENTER);
     }
 
+    /**
+     * Erstellt eine Aktion für die Navigation durch die Karten.
+     *
+     * @param direction Die Richtung der Navigation (-1 für vorherige Karte, 1 für nächste Karte).
+     * @return Ein ActionListener, der die Navigation durchführt.
+     */
     private ActionListener createNavigationAction(int direction) {
         return e -> {
             boolean hasUnsavedChanges = saveButton.isEnabled(); // Überprüfen, ob der Speichern-Button aktiv ist

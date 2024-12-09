@@ -10,17 +10,21 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 
-//View für die Erstellung von Lernkarten. Stellt die UI-Komponenten für die Eingabe von Fragen/Antworten
+/**
+ * Die CardCreatorView-Klasse stellt die grafische Benutzeroberfläche (GUI) für das Erstellen
+ * von Lernkarten bereit. Benutzer können Fragen und Antworten eingeben und die Daten speichern.
+ */
 public class CardCreatorView {
-    private JTextArea questionArea;
-    private JTextArea answerArea;
-    private JTextArea question;
-    private JTextArea answer;
-    private JButton nextButton;
-    private JMenuItem saveMenuItem;
-    private JFrame frame;
+    private JTextArea questionArea; // Textbereich für die Eingabe der Frage
+    private JTextArea answerArea; // Textbereich für die Eingabe der Antwort
+    private JButton nextButton; // Button für das Hinzufügen der nächsten Karte
+    private JMenuItem saveMenuItem; // Menüpunkt zum Speichern der Karten
+    private JFrame frame; // Hauptfenster der GUI
 
-    //Konstruktor für die View.CardCreatorView. Initialisiert das GUI und seine Komponenten.
+    /**
+     * Konstruktor für die CardCreatorView.
+     * Initialisiert die Benutzeroberfläche und ihre Komponenten.
+     */
     public CardCreatorView() {
         //Initialisierung des Hauptfensters
         frame = new JFrame("Lernkarten-Ersteller");
@@ -72,21 +76,38 @@ public class CardCreatorView {
         frame.setLocationRelativeTo(null);
     }
 
-    //Getter-Methoden, um Benutzereingaben abzurufen
+    /**
+     * Gibt den Text aus dem Fragefeld zurück.
+     *
+     * @return Der Text aus dem Fragefeld.
+     */
     public String getQuestionText() {
         return questionArea.getText();
     }
 
+    /**
+     * Gibt den Text aus dem Antwortfeld zurück.
+     *
+     * @return Der Text aus dem Antwortfeld.
+     */
     public String getAnswerText() {
         return answerArea.getText();
     }
 
+    /**
+     * Löscht den Inhalt der Textfelder und setzt den Fokus auf das Fragefeld.
+     */
     public void clearCard() {
         questionArea.setText("");
         answerArea.setText("");
         questionArea.requestFocus();
     }
 
+    /**
+     * Öffnet einen Dialog zum Speichern der Karten in einer Datei.
+     *
+     * @param flashCardList Die Liste der zu speichernden FlashCards.
+     */
     public void promptForFile(List<FlashCard> flashCardList) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Speichern als");
@@ -105,6 +126,12 @@ public class CardCreatorView {
         }
     }
 
+    /**
+     * Speichert die gegebenen FlashCards in eine Datei.
+     *
+     * @param file          Die Datei, in der die FlashCards gespeichert werden sollen.
+     * @param flashCardList Die Liste der zu speichernden FlashCards.
+     */
     private void saveFlashCardsToFile(File file, List<FlashCard> flashCardList) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (FlashCard card : flashCardList) {
@@ -118,25 +145,24 @@ public class CardCreatorView {
         }
     }
 
-    //Methoden zum Setzen der Listener
+    /**
+     * Setzt einen Listener für den "Nächste Karte"-Button.
+     *
+     * @param listener Der ActionListener, der auf den Button reagiert.
+     */
     public void setNextButtonListener(ActionListener listener) {
 
         nextButton.addActionListener(listener);
     }
 
+    /**
+     * Setzt einen Listener für das "Speichern"-Menüelement.
+     *
+     * @param listener Der ActionListener, der auf das Menüelement reagiert.
+     */
     public void setSaveMenuItemListener(ActionListener listener) {
 
         saveMenuItem.addActionListener(listener);
-    }
-
-    //Unit Tests
-    // Getter für die JTextArea-Komponenten
-    public JTextArea getQuestionArea() {
-        return question;
-    }
-
-    public JTextArea getAnswerArea() {
-        return answer;
     }
 
 }
