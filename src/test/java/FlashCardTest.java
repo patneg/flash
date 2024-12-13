@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Testklasse für die FlashCard-Klasse.
  * Testet Konstruktor, Getter, Setter und Methoden wie toString, sowie die Validierung von Eingaben.
+ * @author Christ Solèr
  */
 class FlashCardTest {
 

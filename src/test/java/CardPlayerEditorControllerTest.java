@@ -11,6 +11,7 @@ import java.util.List;
  * Testklasse für die CardPlayerEditorController-Klasse.
  * Testet verschiedene Funktionen des Controllers, wie das Importieren, Speichern,
  * Löschen und Aktualisieren von Karten sowie die Benutzeroberfläche.
+ * @author Christ Solèr
  */
 class CardPlayerEditorControllerTest {
 

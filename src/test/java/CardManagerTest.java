@@ -13,6 +13,9 @@ import Model.FlashCard; // Import der FlashCard-Klasse aus dem Model-Paket
 /**
  * Testklasse für die CardManager-Klasse. Testet das Laden, Speichern, Hinzufügen,
  * Löschen, Aktualisieren und andere grundlegende Funktionen der Kartenverwaltung.
+ * @author Christ Solèr
+ * @author Patrick Negri
+ * @author Olivia Stefanovic
  */
 class CardManagerTest {
     private Model.CardManager cardManager;
