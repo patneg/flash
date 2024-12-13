@@ -13,6 +13,7 @@ import java.util.List;
 /**
  * Die CardCreatorView-Klasse stellt die grafische Benutzeroberfläche (GUI) für das Erstellen
  * von Lernkarten bereit. Benutzer können Fragen und Antworten eingeben und die Daten speichern.
+ * @author Patrick Negri
  */
 public class CardCreatorView {
     private JTextArea questionArea; // Textbereich für die Eingabe der Frage

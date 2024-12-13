@@ -7,6 +7,9 @@ import java.util.List;
 /**
  * Klasse zur Verwaltung von FlashCards. Bietet Funktionen zum Hinzufügen, Löschen,
  * Aktualisieren und Speichern von FlashCards in Dateien.
+ * @author Christ Solèr
+ * @author Patrick Negri
+ * @author Olivia Stefanovic
  */
 public class CardManager {
     private List<Model.FlashCard> flashCards; // Liste zur Speicherung der FlashCards

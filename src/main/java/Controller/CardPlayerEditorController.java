@@ -13,6 +13,8 @@ import java.io.IOException;
 /**
  * Controller für den CardPlayerEditor.
  * Verarbeitet Benutzeraktionen, importiert Datensets und verwaltet Änderungen an Karten.
+ * @author Olivia Stefanovic
+ * @author Christ Solèr
  */
 public class CardPlayerEditorController {
     private CardManager cardManager; // Klasse zum Laden, Speichern und Bearbeiten von Karten

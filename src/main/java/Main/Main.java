@@ -14,6 +14,7 @@ import javax.swing.*;
 /**
  * Hauptklasse der Anwendung. Verwaltet die Initialisierung des Hauptmenüs, des Karten-Erstellers
  * sowie des Karten-Editors und Players.
+ * @author Patrick Negri
  */
 public class Main {
 

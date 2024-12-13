@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 /**
  * Controller-Klasse, die die Interaktionen zwischen der Benutzeroberfläche des Hauptmenüs
  * und der zugrunde liegenden Datenlogik (CardManager) verarbeitet.
+ * @author Patrick Negri
  */
 public class MainMenuController {
     private MainMenuView mainMenuView; // Instanz der Hauptmenü-Ansicht

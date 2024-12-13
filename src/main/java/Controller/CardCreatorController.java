@@ -11,6 +11,7 @@ import java.util.ArrayList;
 /**
  * Controller für die CardCreatorView.
  * Verarbeitet Benutzereingaben und verwaltet die Erstellung der Lernkarten.
+ * @author Patrick Negri
  */
 public class CardCreatorController {
     private final CardCreatorView cardCreatorView; // Die zu steuernde View

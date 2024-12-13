@@ -4,6 +4,9 @@ package Model;
  * Repräsentiert eine Lernkarte (FlashCard) mit einer Frage und einer Antwort.
  * Diese Klasse bietet Methoden zum Abrufen und Setzen von Frage und Antwort,
  * sowie eine Validierung der Eingaben.
+ * @author Christ Solèr
+ * @author Patrick Negri
+ * @author Olivia Stefanovic
  */
 public class FlashCard {
     private String question; // Die Frage der FlashCard

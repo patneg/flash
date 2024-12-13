@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 /**
  * Die Klasse MainMenuView stellt die grafische Benutzeroberfläche für das Hauptmenü der Anwendung bereit.
  * Das Hauptmenü bietet Optionen zum Öffnen des Editors &amp; Players sowie des Lernkarten-Erstellers.
+ * @author Patrick Negri
  */
 public class MainMenuView {
     private JFrame frame; // Hauptfenster der Anwendung

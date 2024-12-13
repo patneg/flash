@@ -12,6 +12,7 @@ import java.io.File;
 /**
  * Diese Klasse stellt die grafische Benutzeroberfläche für den Karten-Editor und Player bereit.
  * Sie ermöglicht das Bearbeiten, Navigieren und Speichern von Karten sowie das Importieren von Kartensets.
+ * @author Olivia Stefanovic
  */
 public class CardPlayerEditorView {
     private JFrame frame; // Hauptfenster der Anwendung
