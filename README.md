@@ -10,6 +10,7 @@
     - Christ Solèr
     - Olivia Stefanovic
     - Patrick Negri
+- GitHub: https://github.com/patneg/flash/
 
 ## Projektübersicht
 Das Flashcards-Projekt ist eine Desktop-Anwendung, die das traditionelle Lernen mit physischen Karteikarten digitalisiert. Die Anwendung ermöglicht es Nutzern, Lernkarten zu erstellen, zu verwalten und effizient zu lernen. Entwickelt als Open-Source-Projekt, bietet es Flexibilität und Skalierbarkeit für die Community.
