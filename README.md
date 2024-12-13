@@ -4,7 +4,7 @@
 
 - **Studiengang:** BSc Wirtschaftsinformatik
 - **Jahrgang:** HS 24/25
-- **Ort:** FFHS, Schweiz
+- **Fachhochschule:** FFHS, Schweiz
 - **Modul:** PA-5
 - **Teammitglieder:**
     - Christ Solèr
@@ -101,6 +101,6 @@ Das Flashcards-Projekt ist eine Desktop-Anwendung, die das traditionelle Lernen 
 ---
 
 ## Kontakt
-- **Christ Solèr**: christ.soler@students.ffhs.com
-- **Olivia Stefanovic**: olivia.stefanovic@students.ffhs.com
-- **Patrick Negri**: patrick.negri@students.ffhs.com
+- **Christ Solèr**: christ.soler@students.ffhs.ch
+- **Olivia Stefanovic**: olivia.stefanovic@students.ffhs.ch
+- **Patrick Negri**: patrick.negri@students.ffhs.ch
